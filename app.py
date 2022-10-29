@@ -9,9 +9,6 @@ from flask_compress import Compress
 import os
 import pandas as pd
 
-
-
-
 app = Flask(__name__, template_folder="./templates")
 app.secret_key = os.urandom(12)
 compress = Compress(app)
