@@ -1,0 +1,92 @@
+<html>
+    <head>  
+        <title>JHJ</title>
+    </head>
+    <body>
+        <h1>JHJ</h1>
+        <input id="t_id" type="text" placeholder="T-ID">
+        <input id="s_id" type="text" placeholder="S-ID">
+        <button onclick="onclick_update()">PUSH</button>
+        <!-- <button onclick="onclick_update_GET()">PUSH_GET</button> -->
+        <button onclick="onclick_show()">SHOW</button>
+    </body>
+</html>
+
+<script>
+    function onclick_update(){
+        console.log('onclick_update');
+        var t_id = document.getElementById("t_id").value;
+        var s_id = document.getElementById("s_id").value;
+        
+        console.log(t_id);
+        console.log(s_id);
+
+        const url = 'http://www.zjvl.me/act'
+
+        var formData = new FormData();
+        formData.append('T_ID', t_id);
+        formData.append('S_ID', s_id);
+        formData.append('UNIXTIMESTAMP', Date.now());
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.send(formData);
+
+        xhr.onload = function() {
+            var json = JSON.parse(xhr.responseText);
+            console.log('satus: ' + json.status);
+            console.log('message: ' + json.message);
+        }
+    }
+    function onclick_show(){
+        const t_id = document.getElementById("t_id").value;
+        const url = 'http://www.zjvl.me/show';
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+        formData.append('T_ID', t_id);
+
+        xhr.open('POST', url, true);
+        xhr.send(formData);
+        xhr.onload = function() {
+            var json = JSON.parse(xhr.responseText);
+            console.log('satus: ' + json.status);
+            console.log('message: ' + json.message);
+            key1 = json.data['S_ID'];
+            key2 = json.data['UNIXTIMESTAMP'];
+            for (var i in key1){
+                console.log(key1[i]);
+            }
+            for (var i in key2){
+                console.log(key2[i]);
+            }
+
+            // for (var key in json.data){
+            //     for (var key2 in json.data[key]){
+            //         console.log(key2 + ': ' + json.data[key][key2]);
+            //     }
+                
+            // }
+        }
+    }
+
+    function onclick_update_GET(){
+        console.log('onclick_update');
+        const t_id = document.getElementById("t_id").value;
+        const s_id = document.getElementById("s_id").value;
+        
+        console.log(t_id);
+        console.log(s_id);
+
+        const url = 'http://www.zjvl.me/act_get' + '?T_ID=' + t_id + '&S_ID=' + s_id + '&UNIXTIMESTAMP=' + Date.now();
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.send();
+
+        xhr.onload = function() {
+            var json = JSON.parse(xhr.responseText);
+            console.log('satus: ' + json.status);
+            console.log('message: ' + json.message);
+        }
+    }      
+</script>
